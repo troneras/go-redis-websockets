@@ -1,0 +1,12 @@
+go 1.21.4
+
+use (
+	.
+	./data
+	./logger
+	./redis
+	./api
+	./websockets
+	./http
+	./events
+)
