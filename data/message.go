@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/troneras/gorews/logger"
+	log "github.com/troneras/gorews/logger"
 )
 
 // Message represents a parsed SMTP message
@@ -23,7 +23,9 @@ func NewMessageFromURL(sha1_secret string, r *http.Request) *Message {
 	// the channel is the sha1 of the /id/:id/[tag/:tag] part
 	url := r.URL
 	h := sha1.New()
+	log.Debug("[API] Calculating channel", log.Fields{"function": "NewMessageFromURL", "sha1_secret": sha1_secret, "path": url.Path})
 	h.Write([]byte(fmt.Sprintf("%s%s", sha1_secret, url.Path)))
+	log.Debug("[API] Calculated channel", log.Fields{"function": "NewMessageFromURL", "channel": fmt.Sprintf("%x", h.Sum(nil))})
 	channel := fmt.Sprintf("%x", h.Sum(nil))
 	// ev is a string like "open,close", split it into a slice of strings
 	events := strings.Split(url.Query().Get("events"), ",")
@@ -43,7 +45,7 @@ func NewMessageFromURL(sha1_secret string, r *http.Request) *Message {
 func getOriginFromRequest(r *http.Request) string {
 	origin := r.Header.Get("Origin")
 	if origin == "" {
-		logger.Println("[APIv1] Origin header not set")
+		log.Warn("[APIv1] Origin header not set", log.Fields{"function": "getOriginFromRequest", "host": r.Host})
 		origin = fmt.Sprintf("http://%s", r.Host)
 	}
 	origin = strings.Split(origin, "//")[1]

@@ -40,6 +40,7 @@ func ReadEnv() {
 	flag.StringVar(&cfg.Domain, "api-domain", getEnv("WS_API_DOMAIN", "localhost"), "Domain where to send the requests for open/close events API, e.g. domain.com")
 	flag.StringVar(&cfg.Brand, "api-brand", getEnv("WS_API_BRAND", "brand1"), "Brand name for API, e.g. brand")
 	flag.StringVar(&cfg.WebPath, "api-web-path", getEnv("WS_API_WEB_PATH", ""), "Web path for API, e.g. /api/v1")
+	flag.StringVar(&cfg.Sha1Secret, "ws-secret", getEnv("WS_SECRET", "secret"), "Sha1 secret for API, e.g. secret")
 }
 
 func getEnv(key, fallback string) string {

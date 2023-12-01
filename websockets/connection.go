@@ -37,7 +37,8 @@ func (c *connection) readLoop() {
 	for {
 		mt, data, err := c.ws.NextReader()
 		if err != nil {
-			log.Error("[WEBSOCKET] Error reading from connection", log.Fields{"error": err})
+			// Error reading from connection - close connection
+			log.Debug("[WEBSOCKET] Error reading from connection (close connection)", log.Fields{"error": err})
 			return
 		}
 		switch mt {

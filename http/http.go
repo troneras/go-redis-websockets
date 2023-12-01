@@ -34,6 +34,7 @@ func Listen(httpBindAddr string, exitCh chan int, registerCallback func(http.Han
 	var err error
 
 	if conf.UseTLS {
+		log.Debug("[HTTP] Using TLS", log.Fields{"cert": conf.SSLCert, "key": conf.SSLKey})
 		err = http.ListenAndServeTLS(httpBindAddr, conf.SSLCert, conf.SSLKey, handler)
 	} else {
 		err = http.ListenAndServe(httpBindAddr, handler)
